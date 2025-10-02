@@ -7,16 +7,22 @@
 #include <iostream>
 #include <cmath>
 
+#include "./time_widget/time_widget.h"
+
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
 	ui->setupUi(this);
 
-	QVBoxLayout *layout = new QVBoxLayout(ui->simulation_widget);
-	layout->addWidget(sim_widget.container);
-	layout->setContentsMargins(0, 0, 0, 0);
-	ui->simulation_widget->setLayout(layout);
+	QVBoxLayout *simulation_widget_layout = new QVBoxLayout(ui->simulation_widget);
+	simulation_widget_layout->addWidget(sim_widget.container);
+	ui->simulation_widget->setLayout(simulation_widget_layout);
+
+	AnimatedPlotWidget *plot = new AnimatedPlotWidget(ui->time_widget);
+	QVBoxLayout *layout = new QVBoxLayout(ui->time_widget);
+	layout->addWidget(plot);
+	ui->time_widget->setLayout(layout);
 
 	// Timer for animation
 	m_timer = new QTimer(this);
