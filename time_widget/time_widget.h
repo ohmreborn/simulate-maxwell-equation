@@ -1,27 +1,22 @@
-#include <QWidget>
-#include <QPainter>
-#include <QTimer>
-#include <QVector>
-#include <QPointF>
-#include <QtMath>
+#pragma once
 
-class AnimatedPlotWidget : public QWidget
+#include <QWidget>
+#include <QLineSeries>
+
+class myplot : public QWidget 
 {
 	Q_OBJECT
+
 	public:
-		explicit AnimatedPlotWidget(QWidget *parent = nullptr);
-
-		public slots:
-			void updateAnimation();
-
-	protected:
-		void paintEvent(QPaintEvent *event) override;
+		explicit myplot(QWidget *parent, 
+				int wave_size,
+				float x_min, float x_max,
+				float y_min, float y_max
+				);
+		void update(float *Ey);
+		~myplot();
+		double phase = 0.1;
 
 	private:
-		QTimer *timer;
-		QVector<QPointF> dataPoints;
-		double time;
-		int maxPoints;
-
-		double minX, maxX, minY, maxY;
+		QLineSeries *series;
 };

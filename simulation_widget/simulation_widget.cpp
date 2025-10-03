@@ -1,10 +1,20 @@
 #include "simulation_widget.h"
+#include <QVBoxLayout>
 
-#include <iostream>
 
-simulation_widget::simulation_widget(int wave_size, double y_min, double y_max){
+simulation_widget::simulation_widget(
+		QWidget *parent,
+		int wave_size, 
+		float x_min, float x_max,
+		float y_min, float y_max,
+		float z_min, float z_max
+		){
 	surface = new Q3DSurface();
 	container = QWidget::createWindowContainer(surface);
+
+	QVBoxLayout *layout = new QVBoxLayout(this);
+	layout->addWidget(container);
+	this->setLayout(layout);
 
 	// Create surface series
 	m_series = new QSurface3DSeries();
@@ -32,9 +42,9 @@ simulation_widget::simulation_widget(int wave_size, double y_min, double y_max){
 	surface->axisX()->setTitleVisible(true);
 	surface->axisZ()->setTitleVisible(true);
 	surface->axisY()->setTitleVisible(true);
-	surface->axisX()->setRange(0, wave_size);
+	surface->axisX()->setRange(x_min, x_max);
 	surface->axisY()->setRange(y_min, y_max);
-	surface->axisZ()->setRange(0, wave_size);
+	surface->axisZ()->setRange(z_min, z_max);
 
 	// Enable selection and set camera
 	surface->setSelectionMode(QAbstract3DGraph::SelectionItemAndRow | QAbstract3DGraph::SelectionSlice);
@@ -57,7 +67,6 @@ void simulation_widget::update(float *Ey, int wave_size){
 		for (int x = 0; x < row->size(); ++x) {
 			QSurfaceDataItem &item = (*row)[x];
 			QVector3D pos = item.position();
-			//pos.setY(myworld.Ey[x][z]);
 			int index = z + x*wave_size;
 			pos.setY(Ey[index]);
 			item.setPosition(pos);

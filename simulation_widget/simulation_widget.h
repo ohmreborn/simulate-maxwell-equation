@@ -4,14 +4,20 @@
 #include <QtDataVisualization/QValue3DAxis>
 #include <QWidget>
 
-class simulation_widget {
+class simulation_widget:public QWidget {
 	public: 
 		Q3DSurface *surface;
 		QWidget *container;
 		QSurface3DSeries *m_series;
 		QSurfaceDataArray *data;
 
-		simulation_widget(int wave_size, double y_min, double y_max);
+		explicit simulation_widget(
+				QWidget *parent,
+				int wave_size, 
+				float x_min, float x_max,
+				float y_min, float y_max,
+				float z_min, float z_max
+				);
 		~simulation_widget();
 
 		void update(float *Ey, int wave_size);

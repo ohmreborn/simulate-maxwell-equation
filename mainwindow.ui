@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>894</width>
-    <height>572</height>
+    <width>1065</width>
+    <height>867</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -27,10 +27,10 @@
    <widget class="QWidget" name="time_widget" native="true">
     <property name="geometry">
      <rect>
-      <x>580</x>
-      <y>0</y>
-      <width>291</width>
-      <height>171</height>
+      <x>540</x>
+      <y>10</y>
+      <width>481</width>
+      <height>381</height>
      </rect>
     </property>
    </widget>
@@ -40,7 +40,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>894</width>
+     <width>1065</width>
      <height>24</height>
     </rect>
    </property>

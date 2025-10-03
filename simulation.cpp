@@ -31,11 +31,11 @@ world::world(){
 //	dt =  lambda / ( 2 * c0);
 
 	x_min = 0;
-	x_max = (wave_size * dx) / 1;
+	x_max = wave_size;
 	y_min = -2.5;
 	y_max = 2.5;
 	z_min = 0;
-	z_max = (wave_size * dz) / 1;
+	z_max = wave_size;
 
 }
 
@@ -100,6 +100,7 @@ void world::update(){
 
 // Source in the center
 	double source = Source_Function(n);
+	//	Ey[1] = source;
 	int index = wave_size * source_x;
 	for (int i=1;i<wave_size-1;i++){
 		Ey[index + i] = source;

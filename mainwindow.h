@@ -2,10 +2,12 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QVBoxLayout>
 #include <QWidget>
 
 #include "simulation.h"
 #include "simulation_widget/simulation_widget.h"
+#include "time_widget/time_widget.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -28,6 +30,7 @@ class MainWindow : public QMainWindow
 		Ui::MainWindow *ui;
 		QTimer *m_timer;
 		world myworld;
-		simulation_widget sim_widget = simulation_widget(myworld.wave_size, myworld.y_min, myworld.y_max);
+		simulation_widget* sim_widget;
+		myplot *time_widget;
 };
 #endif // MAINWINDOW_H
