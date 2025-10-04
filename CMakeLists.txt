@@ -32,6 +32,7 @@ qt_add_executable(main
     mainwindow.ui
 	simulation/simulation.cpp
 	simulation/source_wave/source_wave.cpp
+	mysim/mysim.cpp
 
 
 	simulation_widget/simulation_widget.cpp

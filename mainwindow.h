@@ -9,6 +9,7 @@
 #include "simulation/simulation.h"
 #include "simulation_widget/simulation_widget.h"
 #include "time_widget/time_widget.h"
+#include "mysim/mysim.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -30,8 +31,11 @@ class MainWindow : public QMainWindow
 	private:
 		Ui::MainWindow *ui;
 		QTimer *m_timer;
-		simulation* myworld;
 		simulation_widget* sim_widget;
 		myplot *time_widget;
+
+		Mysim* world;
+		simulation* real_signal;
+		simulation* noise;
 };
 #endif // MAINWINDOW_H

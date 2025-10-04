@@ -1,3 +1,6 @@
+#ifndef SIMULATION_WIDGET
+#define SIMULATION_WIDGET
+
 #include <QtDataVisualization/Q3DSurface>
 #include <QtDataVisualization/QSurface3DSeries>
 #include <QtDataVisualization/QSurfaceDataProxy>
@@ -23,3 +26,4 @@ class simulation_widget:public QWidget {
 		void update(float *Ey, int wave_size);
 };
 
+#endif

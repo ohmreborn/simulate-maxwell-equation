@@ -1,4 +1,5 @@
-#pragma once
+#ifndef TIME_WIDGET
+#define TIME_WIDGET
 
 #include <QWidget>
 #include <QLineSeries>
@@ -20,3 +21,5 @@ class myplot : public QWidget
 	private:
 		QLineSeries *series;
 };
+
+#endif
