@@ -4,8 +4,9 @@
 #include <QMainWindow>
 #include <QVBoxLayout>
 #include <QWidget>
+#include <QTimer>
 
-#include "simulation.h"
+#include "simulation/simulation.h"
 #include "simulation_widget/simulation_widget.h"
 #include "time_widget/time_widget.h"
 
@@ -29,7 +30,7 @@ class MainWindow : public QMainWindow
 	private:
 		Ui::MainWindow *ui;
 		QTimer *m_timer;
-		world myworld;
+		simulation* myworld;
 		simulation_widget* sim_widget;
 		myplot *time_widget;
 };

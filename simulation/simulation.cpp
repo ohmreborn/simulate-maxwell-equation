@@ -1,11 +1,13 @@
 #include "simulation.h"
+#include "source_wave/source_wave.h"
 
 #include <cblas.h>
 
 #include <iostream>
 #include <vector>
 
-world::world(){
+simulation::simulation(size_t wave_size) : wave_size(wave_size)
+{
 	// init a value
 	n = 0;
 
@@ -13,14 +15,13 @@ world::world(){
 	mu0 = 1.256e-6;
 	c0 = 1/std::sqrt(eps0 * mu0);
 
-	wave_size = 100;
-	source_x = 1;
-	source_z = 22;
 
 	Ey = new float[wave_size * wave_size];
-	Ey_prev = new float[wave_size * wave_size];
 	Bx = new float[wave_size * wave_size];
 	Bz = new float[wave_size * wave_size];
+	cblas_sscal( wave_size*wave_size, 0, Ey, 1);
+	cblas_sscal( wave_size*wave_size, 0, Bx, 1);
+	cblas_sscal( wave_size*wave_size, 0, Bz, 1);
 
 	const int a = 20;
 	lambda = 5e-7;
@@ -37,19 +38,21 @@ world::world(){
 	z_min = 0;
 	z_max = wave_size;
 
+	all_source = std::vector<void (*)(simulation *)>(0);
+
 }
 
-world::~world(){
+simulation::~simulation(){
 	delete [] Ey;
-	delete [] Ey_prev;
 	delete [] Bx;
 	delete [] Bz;
 }
 
+void simulation::add(void (*func)(simulation *)){
+	all_source.push_back(func);
+}
 
-
-void world::update(){
-
+inline void update_Bx(size_t wave_size, float dt, float dz, float *Ey, float *Bx){
 	// Update Bx
 	for (int i=1; i<wave_size-1; i++){
 		int index = wave_size * i + 1;
@@ -62,6 +65,9 @@ void world::update(){
 		//	}
 	}
 
+}
+
+inline void update_Bz(size_t wave_size, float dt, float dx, float *Ey, float *Bz){
 	// Update Bz
 	for (int i=1; i<wave_size-1; i++){
 		int index = wave_size * i + 1;
@@ -74,6 +80,14 @@ void world::update(){
 		//}
 	}
 
+}
+
+inline void update_Ey(
+		size_t wave_size, 
+		float eps0, float mu0, 
+		float dt, float dx, float dz, 
+		float *Ey, float *Bx, float *Bz
+		){
 	// Update Ey
 	for (int i=1; i<wave_size-1; i++){
 		int index = wave_size * i + 1;
@@ -92,49 +106,17 @@ void world::update(){
 		//}
 	}
 
-//	for (int i=0;i<wave_size;i++){
-//		if ((60 < i || i < 50) && (40 < i || i < 30)) {
-//			Ey[get_index(20,i)] = 0.0;
-//		}
-//	}
+}
 
-// Source in the center
-	double source = Source_Function(n);
-	//	Ey[1] = source;
-	int index = wave_size * source_x;
-	for (int i=1;i<wave_size-1;i++){
-		Ey[index + i] = source;
-	}
+void simulation::update(){
+	update_Bx(wave_size, dt, dz, Ey, Bx);
+	update_Bz(wave_size, dt, dz, Ey, Bz);
+	update_Ey(wave_size, eps0,  mu0, dt,  dx,  dz, Ey,  Bx,  Bz);
 
-	// mur boundary condition
-	for (int i=0;i<wave_size;++i){
-		int bound = get_index(0,i);
-		int pre_bound = get_index(1,i);
-		Ey[bound] = Ey_prev[pre_bound] + ((c0*dt - dx)/(c0*dt + dx)) * (Ey[bound] - Ey_prev[pre_bound]);
-
-		bound = get_index(i,0);
-		pre_bound = get_index(i,1);
-		Ey[bound] = Ey_prev[pre_bound] + ((c0*dt - dx)/(c0*dt + dx)) * (Ey[bound] - Ey_prev[pre_bound]);
-
-		bound = get_index(wave_size-1,i);
-		pre_bound = get_index(wave_size-2,i);
-		Ey[bound] = Ey_prev[pre_bound] + ((c0*dt - dx)/(c0*dt + dx)) * (Ey[bound] - Ey_prev[pre_bound]);
-
-		bound = get_index(i,wave_size-1);
-		pre_bound = get_index(i,wave_size-2);
-		Ey[bound] = Ey_prev[pre_bound] + ((c0*dt - dx)/(c0*dt + dx)) * (Ey[bound] - Ey_prev[pre_bound]);
-	}
-
-	for (int i=0;i<wave_size * wave_size;++i){
-		Ey_prev[i] = Ey[i];
+	for (int i=0;i<all_source.size();i++){
+		parse_source(all_source[i]);
 	}
 
 	n++;
-}
-
-float world::Source_Function(int t){
-	float w0 = 2*M_PI*c0/lambda;
-	float y = std::sin(w0*t*dt);
-	return y;
 }
 

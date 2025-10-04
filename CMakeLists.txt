@@ -30,11 +30,12 @@ qt_add_executable(main
     mainwindow.cpp
     mainwindow.h
     mainwindow.ui
-	simulation.cpp
+	simulation/simulation.cpp
+	simulation/source_wave/source_wave.cpp
 
-	${CMAKE_CURRENT_SOURCE_DIR}/simulation_widget/simulation_widget.cpp
+
+	simulation_widget/simulation_widget.cpp
 	time_widget/time_widget.cpp
-	#time_widget/time_widget.h
 )
 
 target_link_libraries(main

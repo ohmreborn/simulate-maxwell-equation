@@ -2,8 +2,9 @@
 #define SIMULATION_H
 
 #include <cstdlib>
+#include <vector>
 
-class world{
+class simulation{
 	public:
 		int n;
 
@@ -13,9 +14,6 @@ class world{
 
 		size_t wave_size;
 
-		int source_x;
-		int source_z;
-
 		float lambda;
 		float dx;
 		float dy;
@@ -23,10 +21,9 @@ class world{
 		float dt;
 
 		float *Ey;
-		float *Ey_prev;
 		float *Bx;
 		float *Bz;
-		
+
 		float x_min;
 		float x_max;
 		float y_min;
@@ -34,12 +31,17 @@ class world{
 		float z_min;
 		float z_max;
 
-		world();
-		~world();
+		std::vector<void (*)(simulation *)> all_source;
+
+		simulation(size_t wave_size);
+		~simulation();
+		void add(void (*func)(simulation *));
 
 		void update();
 
-		float Source_Function(int t);
+		inline void parse_source(void (*func)(simulation *)){
+			func(this);
+		}
 
 		inline int get_index(int i,int j){
 			return j + i*wave_size;
