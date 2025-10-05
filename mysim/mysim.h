@@ -16,6 +16,7 @@ class Mysim{
 		float *window;
 		float total_error;
 		size_t window_size;
+		size_t buf_size;
 };
 
 #endif

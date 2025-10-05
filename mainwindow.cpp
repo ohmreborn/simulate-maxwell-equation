@@ -24,7 +24,7 @@ MainWindow::MainWindow(QWidget *parent)
 	real_signal->add(&noise_source);
 	noise->add(&noise_source);
 
-	uint64_t window_size = 32;
+	uint64_t window_size = 5;
 	world = new Mysim(real_signal, noise, window_size);
 
 	sim_widget = new simulation_widget(
