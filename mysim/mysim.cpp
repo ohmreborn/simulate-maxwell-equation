@@ -30,12 +30,12 @@ void Mysim::update(){
 		y[j] = cblas_sdot(window_size, buf, 1, window, 1);
 		e[j] = real_signal->Ey[j] - y[j];
 
-		cblas_saxpy(window_size, 1e-4*e[j], buf, 1, window, 1);
+		cblas_saxpy(window_size, 1e-2*e[j], buf, 1, window, 1);
 	} 
 
 	cblas_saxpy(real_signal->wave_size * real_signal->wave_size, -1, y, 1, real_signal->Ey, 1);
 	cblas_saxpy(real_signal->wave_size * real_signal->wave_size, -1, y, 1, noise->Ey, 1);
 
-	total_error = cblas_snrm2(real_signal->wave_size * real_signal->wave_size, e, 1); 
+	total_error = cblas_snrm2(real_signal->wave_size * real_signal->wave_size, e, 1) / ((float)real_signal->wave_size);
 
 }
