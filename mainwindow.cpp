@@ -40,7 +40,7 @@ MainWindow::MainWindow(QWidget *parent)
 	time_widget = new myplot(ui->time_widget,
 			real_signal->wave_size,
 			real_signal->x_min, real_signal->x_max,
-			real_signal->y_min, real_signal->y_max
+			real_signal->y_min, 10
 			);
 	QVBoxLayout *layout = new QVBoxLayout(ui->time_widget);
 	layout->addWidget(time_widget);
@@ -62,6 +62,6 @@ void MainWindow::updateData()
 {
 	world->update();
 	sim_widget->update(world->real_signal->Ey, world->real_signal->wave_size);
-	time_widget->update(world->real_signal->Ey);
+	time_widget->update(world->total_error);
 }
 

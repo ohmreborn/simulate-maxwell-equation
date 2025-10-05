@@ -14,7 +14,7 @@ class myplot : public QWidget
 				float x_min, float x_max,
 				float y_min, float y_max
 				);
-		void update(float *Ey);
+		void update(float total_error);
 		~myplot();
 		double phase = 0.1;
 

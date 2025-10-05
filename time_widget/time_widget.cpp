@@ -49,11 +49,12 @@ myplot::myplot(QWidget *parent,
     this->setLayout(layout);
 }
 
-void myplot::update(float *Ey){
+void myplot::update(float total_error){
 	QVector<QPointF> points = series->pointsVector();
-	for (int i = 0; i < points.size(); i++) {
-		points[i].setY(Ey[i*points.size()]);
+	for (int i = points.size()-1; i > 0; i--) {
+		points[i].setY(points[i-1].y());
 	}
+	points[0].setY(total_error);
 	series->replace(points);  // Single update to chart
 }
 
